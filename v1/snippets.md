@@ -227,5 +227,59 @@ executorService.execute(() -> {
 ```java
    long startEmpty = System.nanoTime();
 ```
+## 18. Javascript Idle time indicator, active when user moves mouse
+```javascript
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>The template Element</h1>
+<button id="startButton" onclick="showContent()">Activate User Idle</button>
+<button id="stopButton">Stop User Idle</button>
+<template>
+  <h2>Flower</h2>
+</template>
+
+<script>
+    function showContent() {
+        let temp = document.getElementsByTagName("template")[0];
+        let clon = temp.content.cloneNode(true);
+        document.body.appendChild(clon);
+    }
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    startButton.addEventListener("click", async () => {
+    if ((await IdleDetector.requestPermission()) !== "granted") {
+        console.error("Idle detection permission denied.");
+        return;
+    }
+
+    try {
+        const idleDetector = new IdleDetector();
+            idleDetector.addEventListener("change", () => {
+                const userState = idleDetector.userState;
+                const screenState = idleDetector.screenState;
+                console.log(`Idle change: ${userState}, ${screenState}.`);
+        });
+            await idleDetector.start({
+            threshold: 60_000,
+            signal,
+        });
+        console.log("IdleDetector is active.");
+    } catch (err) {
+        console.error(err.name, err.message);
+        }
+    });
+        stopButton.addEventListener("click", () => {
+            controller.abort();
+            console.log("IdleDetector is stopped.");
+    });
+</script>
+
+</body>
+</html>
+```
 
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
