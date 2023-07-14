@@ -39,7 +39,7 @@ Object returnValue = formBeanClass.newInstance();
                 } 
             field.set(returnValue, value); 
         } 
-        saveSessionPlanMessage = sessionPlanDAO.saveSessionPlan((SessionPlanBean) returnValue);
+        somePlanMessage = someDAO.somePlan((SomeBean) returnValue);
         }
     }
 }
@@ -47,19 +47,17 @@ Object returnValue = formBeanClass.newInstance();
 
 ## 2. Mockito generator
 ```java
-// SessionPlanBean beanElement = new SessionPlanBean(); 
-// Class<?> sessionPlanClass = beanElement.getClass(); 
-// Field fields [] = sessionPlanClass.getDeclaredFields(); 
-// // //FIELD NAME GENERATOR // 
+// SomeBean beanElement = new SomePlanBean(); 
+// Class<?> somePlanClass = beanElement.getClass(); 
+// Field fields [] = somePlanClass.getDeclaredFields(); 
+// FIELD NAME GENERATOR  
 for (Field field : fields) { 
     // field.setAccessible(true); 
-    // System.err.println("Field " + field.getName() + " = testSessionPlanBean.getClass().getDeclaredField(\""+ field.getName() + "\");"); 
+    // System.err.println("Field " + field.getName() + " = testSomePlanBean.getClass().getDeclaredField(\""+ field.getName() + "\");"); 
     // System.err.println(field.getName() + ".setAccessible(true);"); 
-    // System.err.println(field.getName() + ".set(testSessionPlanBean,"+ "RandomStringUtils.randomAlphanumeric(20) + \" \" + RandomStringUtils.randomAlphanumeric(20));"); 
+    // System.err.println(field.getName() + ".set(testSomePlanBean,"+ "RandomStringUtils.randomAlphanumeric(20) + \" \" + RandomStringUtils.randomAlphanumeric(20));"); 
     // System.err.println(); // 
-} 
-    // 
-    // System.err.println("GET SESSION PLAN BY ID");
+}    
 ```
 
 ## 3. Object Copy
@@ -93,15 +91,15 @@ filteredParsedList.removeIf(x -> intersectionSessionModuleNoSet.contains(x.getSe
 
 ## 6. MVC Getting data from Model
 ```java
-SessionPlanModuleBean sessionPlanModuleId = (SessionPlanModuleBean) m.asMap().get("sessionPlanModuleBean");
+SomeBean someModuleId = (SomeBean) m.asMap().get("someBean");
 ```
 
 ## 7. Java Streams Distinct
 ```java
-List<String> studentSubjectConfigIdList = sessionPlanModulesList
+List<String> someConfigIdList = someModulesList
             .stream()
             .map((element) -> { 
-                return element.getStudentSubjectConfigId(); 
+                return element.getsomeConfigId(); 
             })
             .distinct()
             .collect(Collectors.toList());
