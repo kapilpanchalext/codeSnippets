@@ -15,7 +15,7 @@
 			document.add(para);
 			document.close();			
 			
-			Path path = Paths.get("C:\\Users\\kapil.panchal.ext\\Downloads\\dinosaur.png");
+			Path path = Paths.get("C:\\Users\\...\\Downloads\\dinosaur.png");
 
 			document = new Document();
 			PdfWriter.getInstance(document, new FileOutputStream("iTextImageExample.pdf"));
@@ -61,7 +61,7 @@
 			PDPage page2 = new PDPage();
 			document2.addPage(page2);
 
-			Path path2 = Paths.get("C:\\Users\\kapil.panchal.ext\\Downloads\\dinosaur.png");
+			Path path2 = Paths.get("C:\\Users\\...\\Downloads\\dinosaur.png");
 			PDPageContentStream contentStream2 = new PDPageContentStream(document2, page2);
 			PDImageXObject image 
 			  = PDImageXObject.createFromFile(path2.toAbsolutePath().toString(), document2);
