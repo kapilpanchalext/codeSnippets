@@ -1,4 +1,4 @@
-# PDF Create Snippets
+# PDF Create Snippets [Reference](https://www.baeldung.com/java-pdf-creation)
 
 ```java
 	public String writePdf() {
