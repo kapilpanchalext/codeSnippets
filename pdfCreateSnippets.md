@@ -1,4 +1,4 @@
-# PDF Create Snippets [Reference](https://www.baeldung.com/java-pdf-creation)
+# 1. PDF Create Snippets [Reference](https://www.baeldung.com/java-pdf-creation)
 
 ```java
 	public String writePdf() {
@@ -81,4 +81,23 @@
 		
 		return "Write Successful!";
 	}
+```
+
+# 2. Dependencies 
+```xml
+<dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>itextpdf</artifactId>
+    <version>5.5.13.3</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>3.0.0-RC1</version>
+</dependency>
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcprov-jdk15on</artifactId>
+    <version>1.56</version>
+</dependency>
 ```
