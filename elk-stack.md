@@ -259,9 +259,11 @@ services:
     labels:
       co.elastic.logs/module: logstash
     user: root
+    command: ["logstash", "-f", "/usr/share/logstash/pipeline/logstash.conf"]
     volumes:
       - certs:/usr/share/logstash/certs
       - logstashdata:/usr/share/logstash/data
+      - "C:/Users/kapil.panchal.ext/Desktop/logs/elk-stack.log:/usr/share/logstash/logs/elk-stack.log:ro"
       - "./logstash_ingest_data/:/usr/share/logstash/ingest_data/"
       - "./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
     environment:
@@ -310,8 +312,8 @@ input {
         #https://www.elastic.co/guide/en/logstash/current/plugins-inputs-file.html
         #default is TAIL which assumes more data will come into the file.
         #change to mode => "read" if the file is a complete file.  by default, the file will be removed once reading is complete -- backup your files if you need them.
-        mode => "tail"
-        path => "/usr/share/logstash/ingest_data/*"
+        #mode => "tail"
+        path => "/usr/share/logstash/logs/elk-stack.log" # the path of this file should be same as the path given in docker-compose.yml
         start_position => "beginning"
         #path => "C:/Users/kapil.panchal.ext/Desktop/logs/elk-stack.log"
     }
