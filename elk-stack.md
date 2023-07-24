@@ -32,7 +32,7 @@ MEM_LIMIT=1073741824
 ```
 
 # 2. Create a docker-compose.yml file
-```sh
+```java
 version: "2.2"
 
 services:
