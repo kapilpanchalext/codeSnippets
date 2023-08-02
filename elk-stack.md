@@ -367,9 +367,19 @@ output {
   13 $certFilePath = "D:\ELK_Stack\docker\v5\ca.crt"
   14 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath)
   15 Invoke-WebRequest -Method GET -Uri 'https://localhost:9200' -Certificate $cert
-  16 Add-Type @"...
-       [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-  17 $certFilePath = "D:\ELK_Stack\docker\v5\ca.crt"
+  16 Add-Type @"
+      using System.Net;
+      using System.Security.Cryptography.X509Certificates;
+      public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(ServicePoint srvPoint, X509Certificate certificate, WebRequest request, int certificateProblem) {
+          return true;
+        }
+    }
+ "@ 
+  
+  17 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+  
+  $certFilePath = "D:\ELK_Stack\docker\v5\ca.crt"
   18 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath)
   19 Invoke-WebRequest -Method GET -Uri 'https://localhost:9200' -Certificate $cert
 
