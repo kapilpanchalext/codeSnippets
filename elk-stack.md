@@ -10,7 +10,7 @@ KIBANA_PASSWORD=changeit
 STACK_VERSION=8.8.2
 
 # Set the cluster name
-CLUSTER_NAME=docker-cluster
+CLUSTER_NAME=elk-cluster
 
 # Set to 'basic' or 'trial' to automatically start the 30-day trial
 LICENSE=basic
@@ -24,6 +24,10 @@ ES_PORT=9200
 KIBANA_PORT=5601
 #KIBANA_PORT=80
 
+# Port to expose Logstash to the host
+LOGSTASH_PORT=5044
+#LOGSTASH_PORT=80
+
 # Increase or decrease based on the available host memory (in bytes)
 MEM_LIMIT=1073741824
 
@@ -32,7 +36,7 @@ MEM_LIMIT=1073741824
 ```
 
 # 2. Create a docker-compose.yml file
-```java
+```sh
 version: "2.2"
 
 services:
@@ -263,9 +267,12 @@ services:
     volumes:
       - certs:/usr/share/logstash/certs
       - logstashdata:/usr/share/logstash/data
-      - "C:/Users/kapil.panchal.ext/Desktop/logs/elk-stack.log:/usr/share/logstash/logs/elk-stack.log:ro"
+      # - "D:/STS_WORKSPACE/.metadata/.plugins/org.eclipse.wst.server.core/tmp3/logs/portal_logs/portal/2023-07/portal-2023-07-19.log:/usr/share/logstash/logs/portal-2023-07-19.log:ro"
       - "./logstash_ingest_data/:/usr/share/logstash/ingest_data/"
       - "./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+      # "C:/Users/kapil.panchal.ext/Desktop/logs/elk-stack.log:/usr/share/logstash/logs/elk-stack.log:ro"
+    ports:
+      - ${LOGSTASH_PORT}:5044
     environment:
       - xpack.monitoring.enabled=false
       - ELASTIC_USER=elastic
@@ -308,30 +315,85 @@ http://localhost:5601
 # 7. Create logstash.conf file
 ```sh
 input {
-    file {
-        #https://www.elastic.co/guide/en/logstash/current/plugins-inputs-file.html
-        #default is TAIL which assumes more data will come into the file.
-        #change to mode => "read" if the file is a complete file.  by default, the file will be removed once reading is complete -- backup your files if you need them.
-        #mode => "tail"
-        path => "/usr/share/logstash/logs/elk-stack.log" # the path of this file should be same as the path given in docker-compose.yml
-        start_position => "beginning"
-        #path => "C:/Users/kapil.panchal.ext/Desktop/logs/elk-stack.log"
+    tcp {
+        port => 5044
+            codec => json_lines
     }
 }
 
 filter {
+    grok {
+        match => {
+            "logger_name" => "sfdc_emails_save_to_elastic"          
+        }
+    }
 }
 
 output {
-    stdout {
-        codec => rubydebug
-    }
-    elasticsearch {
-        index => "logstash-%{+YYYY.MM.dd}"
-        hosts=> "${ELASTIC_HOSTS}"
-        user=> "${ELASTIC_USER}"
-        password=> "${ELASTIC_PASSWORD}"
-        cacert=> "certs/ca/ca.crt"
+    if "_grokparsefailure" not in [tags] {
+        stdout {
+            codec => rubydebug
+        }
+        elasticsearch {
+            index => "logstash-%{+YYYY.MM.dd}"
+            hosts=> "${ELASTIC_HOSTS}"
+            user=> "${ELASTIC_USER}"
+            password=> "${ELASTIC_PASSWORD}"
+            cacert=> "certs/ca/ca.crt"
+        }
     }
 }
 ```
+
+# 7. Powershell with Admin account where the docker cluster is running 
+### (Elastic search will give an out of memory error) 'can't store an async search response larger 
+### than [10485760] steps to increase out of memory error  
+
+```sh
+   1 d:
+   2 cd .\ELK_Stack\
+   3 cd .\docker\v5
+   4 ls
+   5 docker-compose up -d
+   6 ls
+   7 docker ps
+   8 docker logs <container id>  
+   9 docker ps
+  10 docker cp <container id>:/usr/share/elasticsearch/config/certs/ca/ca.crt .
+
+  11 $certificate = Get-Item -Path .\ca.crt
+  12 Invoke-WebRequest -Method GET -Uri 'https://localhost:9200' -Certificate $certificate
+
+  13 $certFilePath = "D:\ELK_Stack\docker\v5\ca.crt"
+  14 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath)
+  15 Invoke-WebRequest -Method GET -Uri 'https://localhost:9200' -Certificate $cert
+  16 Add-Type @"...
+       [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+  17 $certFilePath = "D:\ELK_Stack\docker\v5\ca.crt"
+  18 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certFilePath)
+  19 Invoke-WebRequest -Method GET -Uri 'https://localhost:9200' -Certificate $cert
+
+  20 $username = "elastic"
+  21 $password = "changeit"
+  22 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+  23 $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+  24 Invoke-WebRequest -Method GET -Uri $uri -Credential $credential
+  
+  25 $uri = "https://localhost:9200/_cluster/settings"
+  
+  26 $payload = @{
+          persistent = @{
+          "search.max_async_search_response_size" = "50mb"
+        }
+      } | ConvertTo-Json
+  
+  27 $headers = @{
+        "Content-Type" = "application/json"
+      }
+
+  28 Invoke-WebRequest -Method PUT -Uri $uri -Body $payload -Headers $headers -Credential $credential
+  39 Invoke-WebRequest -Method PUT -Uri 'https://localhost:9200/_cluster/settings' -Credential $credential
+
+```
+
+[Ref](https://www.elastic.co/blog/getting-started-with-the-elastic-stack-and-docker-compose)
