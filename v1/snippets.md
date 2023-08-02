@@ -1,26 +1,26 @@
 # Code Snippets Collections
 
-- [1. Merging an Object Bean (Two beans with same parent will concatenate into a third bean with both elements and no nulls)](#1-merging-an-object-bean--two-beans-with-same-parent-will-concatenate-into-a-third-bean-with-both-elements-and-no-nulls-)
-- [2. Mockito generator](#2-mockito-generator)
-- [3. Object Copy](#3-object-copy)
-- [4. Remove Duplicates from a List using Java Streams](#4-remove-duplicates-from-a-list-using-java-streams)
-- [5. Remove from a List on condition](#5-remove-from-a-list-on-condition)
-- [6. MVC Getting data from Model](#6-mvc-getting-data-from-model)
-- [7. Java Streams Distinct](#7-java-streams-distinct)
-- [8. Filter one list from another(O(N**2) Time Complexity)](#8-filter-one-list-from-another-o-n--2--time-complexity-)
-- [9. Filter one list from another(O(N**2) Time Complexity)](#9-filter-one-list-from-another-o-n--2--time-complexity-)
-- [10. Concurrent Streams](#10-concurrent-streams)
-- [11. Executor Service](#11-executor-service)
-- [12. Logback-Config](#12-logback-config)
-- [13. Collectors To Counting](#13-collectors-to-counting)
-- [14. Map getOrDefault (remove duplicates (O(N) or O(N-log(N)) Time Complexity))](#14-map-getordefault--remove-duplicates--o-n--or-o-n-log-n---time-complexity--)
-- [15. Map getOrDefault (remove duplicates (O(N) or O(N-log(N)) Time Complexity))](#15-map-getordefault--remove-duplicates--o-n--or-o-n-log-n---time-complexity--)
-- [16. Collections Frequency(O(N**2) Time Complexity)](#16-collections-frequency-o-n--2--time-complexity-)
-- [17. Execution time (nano seconds)](#17-execution-time--nano-seconds-)
-- [18. Javascript Idle time indicator, active when user moves mouse](#18-javascript-idle-time-indicator--active-when-user-moves-mouse)
+- [Code Snippets Collections](#code-snippets-collections)
+  - [1. Merging an Object Bean (Two beans with same parent will concatenate into a third bean with both elements and no nulls)](#1-merging-an-object-bean-two-beans-with-same-parent-will-concatenate-into-a-third-bean-with-both-elements-and-no-nulls)
+  - [2. Mockito generator](#2-mockito-generator)
+  - [3. Object Copy](#3-object-copy)
+  - [4. Remove Duplicates from a List using Java Streams](#4-remove-duplicates-from-a-list-using-java-streams)
+  - [5. Remove from a List on condition](#5-remove-from-a-list-on-condition)
+  - [6. MVC Getting data from Model](#6-mvc-getting-data-from-model)
+  - [7. Java Streams Distinct](#7-java-streams-distinct)
+  - [8. Filter one list from another(O(N\*\*2) Time Complexity)](#8-filter-one-list-from-anotheron2-time-complexity)
+  - [9. Filter one list from another(O(N\*\*2) Time Complexity)](#9-filter-one-list-from-anotheron2-time-complexity)
+  - [10. Concurrent Streams](#10-concurrent-streams)
+  - [11. Executor Service](#11-executor-service)
+  - [12. Logback-Config](#12-logback-config)
+  - [13. Collectors To Counting](#13-collectors-to-counting)
+  - [14. Map getOrDefault (remove duplicates (O(N) or O(N-log(N)) Time Complexity))](#14-map-getordefault-remove-duplicates-on-or-on-logn-time-complexity)
+  - [15. Map getOrDefault (remove duplicates (O(N) or O(N-log(N)) Time Complexity))](#15-map-getordefault-remove-duplicates-on-or-on-logn-time-complexity)
+  - [16. Collections Frequency(O(N\*\*2) Time Complexity)](#16-collections-frequencyon2-time-complexity)
+  - [17. Execution time (nano seconds)](#17-execution-time-nano-seconds)
+  - [18. Logstash-Logback Encoder](#18-logstash-logback-encoder)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 
 
@@ -40,7 +40,7 @@ Object returnValue = formBeanClass.newInstance();
                 } 
             field.set(returnValue, value); 
         } 
-        somePlanMessage = someDAO.somePlan((SomeBean) returnValue);
+        saveSessionPlanMessage = sessionPlanDAO.saveSessionPlan((SessionPlanBean) returnValue);
         }
     }
 }
@@ -48,17 +48,19 @@ Object returnValue = formBeanClass.newInstance();
 
 ## 2. Mockito generator
 ```java
-// SomeBean beanElement = new SomePlanBean(); 
-// Class<?> somePlanClass = beanElement.getClass(); 
-// Field fields [] = somePlanClass.getDeclaredFields(); 
-// FIELD NAME GENERATOR  
+// SessionPlanBean beanElement = new SessionPlanBean(); 
+// Class<?> sessionPlanClass = beanElement.getClass(); 
+// Field fields [] = sessionPlanClass.getDeclaredFields(); 
+// // //FIELD NAME GENERATOR // 
 for (Field field : fields) { 
     // field.setAccessible(true); 
-    // System.err.println("Field " + field.getName() + " = testSomePlanBean.getClass().getDeclaredField(\""+ field.getName() + "\");"); 
+    // System.err.println("Field " + field.getName() + " = testSessionPlanBean.getClass().getDeclaredField(\""+ field.getName() + "\");"); 
     // System.err.println(field.getName() + ".setAccessible(true);"); 
-    // System.err.println(field.getName() + ".set(testSomePlanBean,"+ "RandomStringUtils.randomAlphanumeric(20) + \" \" + RandomStringUtils.randomAlphanumeric(20));"); 
+    // System.err.println(field.getName() + ".set(testSessionPlanBean,"+ "RandomStringUtils.randomAlphanumeric(20) + \" \" + RandomStringUtils.randomAlphanumeric(20));"); 
     // System.err.println(); // 
-}    
+} 
+    // 
+    // System.err.println("GET SESSION PLAN BY ID");
 ```
 
 ## 3. Object Copy
@@ -92,15 +94,15 @@ filteredParsedList.removeIf(x -> intersectionSessionModuleNoSet.contains(x.getSe
 
 ## 6. MVC Getting data from Model
 ```java
-SomeBean someModuleId = (SomeBean) m.asMap().get("someBean");
+SessionPlanModuleBean sessionPlanModuleId = (SessionPlanModuleBean) m.asMap().get("sessionPlanModuleBean");
 ```
 
 ## 7. Java Streams Distinct
 ```java
-List<String> someConfigIdList = someModulesList
+List<String> studentSubjectConfigIdList = sessionPlanModulesList
             .stream()
             .map((element) -> { 
-                return element.getsomeConfigId(); 
+                return element.getStudentSubjectConfigId(); 
             })
             .distinct()
             .collect(Collectors.toList());
@@ -228,59 +230,17 @@ executorService.execute(() -> {
 ```java
    long startEmpty = System.nanoTime();
 ```
-## 18. Javascript Idle time indicator, active when user moves mouse
-```javascript
-<!DOCTYPE html>
-<html>
-<body>
 
-<h1>The template Element</h1>
-<button id="startButton" onclick="showContent()">Activate User Idle</button>
-<button id="stopButton">Stop User Idle</button>
-<template>
-  <h2>Flower</h2>
-</template>
+## 18. Logstash-Logback Encoder
+```xml
+    <appender name="emails_to_elastic" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>127.0.0.1:5044</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"><timeZone>UTC</timeZone></encoder>
+    </appender>
 
-<script>
-    function showContent() {
-        let temp = document.getElementsByTagName("template")[0];
-        let clon = temp.content.cloneNode(true);
-        document.body.appendChild(clon);
-    }
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    startButton.addEventListener("click", async () => {
-    if ((await IdleDetector.requestPermission()) !== "granted") {
-        console.error("Idle detection permission denied.");
-        return;
-    }
-
-    try {
-        const idleDetector = new IdleDetector();
-            idleDetector.addEventListener("change", () => {
-                const userState = idleDetector.userState;
-                const screenState = idleDetector.screenState;
-                console.log(`Idle change: ${userState}, ${screenState}.`);
-        });
-            await idleDetector.start({
-            threshold: 60_000,
-            signal,
-        });
-        console.log("IdleDetector is active.");
-    } catch (err) {
-        console.error(err.name, err.message);
-        }
-    });
-        stopButton.addEventListener("click", () => {
-            controller.abort();
-            console.log("IdleDetector is stopped.");
-    });
-</script>
-
-</body>
-</html>
+    <root level="error">
+       	<appender-ref ref="emails_to_elastic" />
+    </root>
 ```
 
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
