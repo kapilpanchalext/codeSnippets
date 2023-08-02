@@ -18,6 +18,7 @@
   - [15. Map getOrDefault (remove duplicates (O(N) or O(N-log(N)) Time Complexity))](#15-map-getordefault-remove-duplicates-on-or-on-logn-time-complexity)
   - [16. Collections Frequency(O(N\*\*2) Time Complexity)](#16-collections-frequencyon2-time-complexity)
   - [17. Execution time (nano seconds)](#17-execution-time-nano-seconds)
+  - [18. Logstash-Logback Encoder](#18-logstash-logback-encoder)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -228,6 +229,18 @@ executorService.execute(() -> {
 ## 17. Execution time (nano seconds)
 ```java
    long startEmpty = System.nanoTime();
+```
+
+## 18. Logstash-Logback Encoder
+```xml
+    <appender name="emails_to_elastic" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>127.0.0.1:5044</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"><timeZone>UTC</timeZone></encoder>
+    </appender>
+
+    <root level="error">
+       	<appender-ref ref="emails_to_elastic" />
+    </root>
 ```
 
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
