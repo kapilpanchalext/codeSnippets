@@ -22,11 +22,6 @@
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
-
 ## 1. Merging an Object Bean (Two beans with same parent will concatenate into a third bean with both elements and no nulls)
 
 ```java
