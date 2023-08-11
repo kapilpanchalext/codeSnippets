@@ -19,8 +19,10 @@
 - [17. Execution time (nano seconds)](#17-execution-time--nano-seconds-)
 - [18. Logstash-Logback Encoder](#18-logstash-logback-encoder)
 - [19. Javascript Idle time indicator, active when user moves mouse](#19-javascript-idle-time-indicator--active-when-user-moves-mouse)
+- [20. Snippet for getting all session keys stored in HttpServlet request](#20-snippet-for-getting-all-session-keys-stored-in-httpservlet-request)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 ## 1. Merging an Object Bean (Two beans with same parent will concatenate into a third bean with both elements and no nulls)
 
@@ -294,20 +296,20 @@ executorService.execute(() -> {
 </body>
 </html>
 ```
-### 20. Snippet for getting all session keys stored in HttpServlet request
+## 20. Snippet for getting all session keys stored in HttpServlet request
 ```sh
-		Enumeration<String> requestAttributeNames = request.getAttributeNames();
-		while (requestAttributeNames.hasMoreElements()) {
-		    String attributeName = requestAttributeNames.nextElement();
-		    System.err.println("Request Attribute Name: " + attributeName);
-		}
-
-		HttpSession session = request.getSession();
-		Enumeration<String> sessionAttributeNames = session.getAttributeNames();
-		while (sessionAttributeNames.hasMoreElements()) {
-		    String attributeName = sessionAttributeNames.nextElement();
-		    System.err.println("Session Attribute Name: " + attributeName);
-		}
+	Enumeration<String> requestAttributeNames = request.getAttributeNames();
+	while (requestAttributeNames.hasMoreElements()) {
+	    String attributeName = requestAttributeNames.nextElement();
+	    System.err.println("Request Attribute Name: " + attributeName);
+	}
+	
+	HttpSession session = request.getSession();
+	Enumeration<String> sessionAttributeNames = session.getAttributeNames();
+	while (sessionAttributeNames.hasMoreElements()) {
+	    String attributeName = sessionAttributeNames.nextElement();
+	    System.err.println("Session Attribute Name: " + attributeName);
+	}
 ```
 
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
