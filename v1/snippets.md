@@ -294,4 +294,20 @@ executorService.execute(() -> {
 </body>
 </html>
 ```
+### 20. Snippet for getting all session keys stored in HttpServlet request
+```sh
+		Enumeration<String> requestAttributeNames = request.getAttributeNames();
+		while (requestAttributeNames.hasMoreElements()) {
+		    String attributeName = requestAttributeNames.nextElement();
+		    System.err.println("Request Attribute Name: " + attributeName);
+		}
+
+		HttpSession session = request.getSession();
+		Enumeration<String> sessionAttributeNames = session.getAttributeNames();
+		while (sessionAttributeNames.hasMoreElements()) {
+		    String attributeName = sessionAttributeNames.nextElement();
+		    System.err.println("Session Attribute Name: " + attributeName);
+		}
+```
+
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
