@@ -311,5 +311,148 @@ executorService.execute(() -> {
 	    System.err.println("Session Attribute Name: " + attributeName);
 	}
 ```
+## 21. Grid Content Area(GUI)
+```sh
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hello World</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/hello.css}" />
+	
+	<script>	
+        // Replace this with your actual condition to check if content is null
+        const isContentNull = false; // Change to false if content is not null
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.querySelector('.container');
+            if (isContentNull) {
+                container.style.gridTemplateAreas = `
+                    "header header header"
+                    "sidebar content-1 content-1"
+                    "sidebar content-3 content-3"
+                    "footer footer footer"
+                `;
+            } else {
+                container.style.gridTemplateAreas = `
+                    "header header header"
+                    "sidebar content-1 content-1"
+                    "sidebar content-2 content-3"
+                    "footer footer footer"
+                `;
+            }
+        });  
+	</script>
+</head>
+
+<body>
+	<div class="row">
+		<h1>grid-template-areas</h1>
+		<div class="container">
+			<div class="item header">header</div>
+			<div class="item sidebar">sidebar</div>
+			<div class="item content-1">Content-1</div>
+			<div class="item content-2">Content-2</div>
+			<div class="item content-3">Content-3</div>
+			<div class="item footer">footer</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+	</script>
+</body>
+</html>
+
+css
+
+```sh
+.container {
+  display: grid;
+  width: 1920px;
+  height: 768px;
+  grid-template-columns: 200px 400px 1fr;
+  grid-template-rows: 80px 1fr 1fr 100px;
+  grid-gap: 1rem;
+  grid-template-areas:
+      "header header header"
+      "sidebar content-1 content-1"
+      "sidebar content-2 content-3"
+      "footer footer footer";
+}
+
+.header {
+  grid-area: header;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.content-1 {
+  grid-area: content-1;
+}
+
+.content-2 {
+  grid-area: content-2;
+}
+
+.content-3 {
+  grid-area: content-3;
+}
+
+.footer {
+  grid-area: footer;
+  grid-row: 4 / 5;
+  grid-column: 1 / 4;
+}
+
+/* OTHER STYLES */
+
+body {
+  background-color: #3b404e;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.item {
+  background-color: #1EAAFC;
+  background-image: linear-gradient(130deg, #6C52D9 0%, #1EAAFC 85%, #3EDFD7 100%);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  color: #ffffff;
+  border-radius: 4px;
+  border: 6px solid #171717;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.header {
+  background-color: #1EAAFC;
+  background-image: linear-gradient(160deg, #6C52D9 0%, #9B8AE6 127%);
+}
+
+.sidebar {
+  background-image: linear-gradient(203deg, #3EDFD7 0%, #29A49D 90%)
+}
+
+.content-1,
+.content-2,
+.content-3 {
+  background-image: linear-gradient(130deg, #6C52D9 0%, #1EAAFC 85%, #3EDFD7 100%);
+}
+
+.footer {
+  background-color: #6C52D9;
+  background-image: linear-gradient(160deg, #6C52D9 0%, #9B8AE6 127%);
+}
+```
 
 Note: [Reference](file:///D:/PROJECT_ENABLERS/markdowns/CodeReviewGeneralCommentsV1.md)
